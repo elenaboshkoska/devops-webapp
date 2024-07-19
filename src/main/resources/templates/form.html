@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>WP Exam</title>
+</head>
+<body>
+<!-- The form should submit to StudentController.create or StudentController.update,
+     depending on whether we are creating or editing an entity -->
+<form th:action="${student != null} ? '/students/'+${student.getId()} : '/students/add'" method="post">
+    <div>
+        <label for="f1">Name</label>
+        <input type="text" name="name" th:value="${student != null} ? ${student.getName()} : '' "
+               id="f1"
+               required>
+    </div>
+    <div>
+        <label for="f2">Email</label>
+        <input type="email" name="email" th:value="${student != null} ? ${student.getEmail()} : ''"
+               id="f2"
+               required>
+    </div>
+    <div>
+        <label for="f3">Password</label>
+        <!-- Do not set the value here -->
+        <input type="password" name="password"
+               id="f3"
+               required>
+    </div>
+    <div>
+        <label for="f6">Enrollment Date</label>
+        <input type="date" name="enrollmentDate" th:value="${student != null} ? ${student.getEnrollmentDate()} : ''"
+               id="f6"
+               required>
+    </div>
+    <div>
+        <label>Type</label><br/>
+        <select id="f4" name="type">
+            <!-- For each type you should have one <option> like below  -->
+            <th:block th:each="type : ${types}">
+                <option th:text="${type.name()}" th:value="${type}" th:selected="${student != null} ? ${student.getType().name() == type.name()} : false"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label>Courses</label><br/>
+        <select id="f5"  multiple name="coursesId">
+            <!-- For each course you should have one <option> like below  -->
+                <option th:each="course : ${courses}" th:value="${course.getId()}" th:text="${course.getName()}" th:selected="${student != null} ? ${student.getCourses().contains(course)} : false"></option>
+        </select>
+    </div>
+
+    <button id="submit" type="submit">Submit</button>
+    <a id="back" href="/students" type="button" class="btn btn-primary">Back to students</a>
+</form>
+
+<div>
+    <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
