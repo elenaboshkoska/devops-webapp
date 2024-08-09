@@ -38,15 +38,17 @@ public class DataInitializer {
         }
 
         List<Course> courses = this.courseService.listAll();
-        for (int i = 1; i < 11; i++) {
-            this.service.create(
-                    "Student: " + i,
-                    "student." + i + "@wp.finki.ukim.mk",
-                    "emp" + i,
-                    this.randomizeEventType(i),
-                    Stream.of(courses.get((i - 1) % 5).getId(), courses.get((i + 1) % 5).getId()).collect(Collectors.toList()),
-                    LocalDate.now().minusYears((i + 1) / 2)
-            );
+        if(courseService.listAll().isEmpty()) {
+            for (int i = 1; i < 11; i++) {
+                this.service.create(
+                        "Student: " + i,
+                        "student." + i + "@wp.finki.ukim.mk",
+                        "emp" + i,
+                        this.randomizeEventType(i),
+                        Stream.of(courses.get((i - 1) % 5).getId(), courses.get((i + 1) % 5).getId()).collect(Collectors.toList()),
+                        LocalDate.now().minusYears((i + 1) / 2)
+                );
+            }
         }
     }
 }
